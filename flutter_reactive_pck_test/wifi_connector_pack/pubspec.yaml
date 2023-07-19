@@ -1,4 +1,4 @@
-name: bluetooth
+name: wifi_connector_pack
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -35,7 +35,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+#  wifi_iot: ^0.3.18
+#  wifi_scan: ^0.4.0+1
   flutter_blue_plus: ^1.5.2
+  permission_handler: ^10.2.0
+  scoped_model: ^2.0.0-nullsafety.0
+  flutter_bluetooth_serial:
+  flutter_reactive_ble: ^5.1.1
+#  location_permissions:
 
 dev_dependencies:
   flutter_test:

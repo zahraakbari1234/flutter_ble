@@ -3,15 +3,12 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:wifi_connector_pack/test_page.dart';
 
-class LightPage extends StatefulWidget {
-  final BluetoothDevice server;
+class TestPage extends StatefulWidget {
 
-  const LightPage({required this.server});
 
   @override
-  State<LightPage> createState() => _LightPageState();
+  State<TestPage> createState() => _TestPageState();
 }
 
 class _Message {
@@ -21,7 +18,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _LightPageState extends State<LightPage> {
+class _TestPageState extends State<TestPage> {
   static const clientID = 0;
   BluetoothConnection? connection;
   late bool _isSelected = false;
@@ -33,70 +30,17 @@ class _LightPageState extends State<LightPage> {
 
   final ScrollController listScrollController = new ScrollController();
 
-  bool isConnecting = true;
-  bool get isConnected => (connection?.isConnected ?? false);
+  bool  isConnected = true;
 
-  bool isDisconnecting = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    print(_isSelected);
-
-    BluetoothConnection.toAddress(widget.server.address).then((_connection) {
-      print('Connected to the device');
-      connection = _connection;
-      setState(() {
-        isConnecting = false;
-        isDisconnecting = false;
-      });
-
-      connection!.input!.listen(_onDataReceived).onDone(() {
-        // Example: Detect which side closed the connection
-        // There should be `isDisconnecting` flag to show are we are (locally)
-        // in middle of disconnecting process, should be set before calling
-        // `dispose`, `finish` or `close`, which all causes to disconnect.
-        // If we except the disconnection, `onDone` should be fired as result.
-        // If we didn't except this (no flag set), it means closing by remote.
-        if (isDisconnecting) {
-          print('Disconnecting locally!');
-        } else {
-          print('Disconnected remotely!');
-        }
-        if (this.mounted) {
-          setState(() {});
-        }
-      });
-    }).catchError((error) {
-      print('Cannot connect, exception occured');
-      print(error);
-    });
-  }
-
-  @override
-  void dispose() {
-    // Avoid memory leak (`setState` after dispose) and disconnect
-    if (isConnected) {
-      isDisconnecting = true;
-      connection?.dispose();
-      connection = null;
-    }
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final serverName = widget.server.name ?? "Unknown";
 
     return Scaffold(
       appBar: AppBar(
-          title: (isConnecting
-              ? Text('Connecting chat to $serverName...')
-              : isConnected
-                  ? Text('Live chat with $serverName')
-                  : Text('Chat log with $serverName'))),
+          title: (Text("test"))
+      ),
+
       body: SafeArea(
           child: Container(
               margin: const EdgeInsets.only(top: 50),
@@ -104,24 +48,21 @@ class _LightPageState extends State<LightPage> {
               width: double.infinity,
               child: Center(
                   child: MaterialButton(
-                onPressed: isConnected
-                    ? () {
-                        setState(() {
-                          _isSelected = !_isSelected;
-                          _isSelected == true
-                              ? _sendMessage('1')
-                              : _sendMessage('0');
-                          print(_isSelected);
-                        });
-                      }
-                    : null,
-                color: _isSelected == true ? Colors.yellow : Colors.grey[500],
-                child: Text(_isSelected == true ? 'off' : 'on'),
-              )))),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=>  TestPage(),
+                    onPressed: isConnected
+                        ? () {
+                      setState(() {
+                        _isSelected = !_isSelected;
+                        _isSelected == true
+                            ? _sendMessage('1')
+                            : _sendMessage('0');
+                        print(_isSelected);
+                      });
+                    }
+                        : null,
+                    color: _isSelected == true ? Colors.yellow : Colors.grey[500],
+                    child: Text(_isSelected == true ? 'off' : 'on'),
+                  )))),
 
-      ),
     );
   }
 
@@ -160,7 +101,7 @@ class _LightPageState extends State<LightPage> {
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                    0, _messageBuffer.length - backspacesCounter)
+                0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -169,7 +110,7 @@ class _LightPageState extends State<LightPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-              0, _messageBuffer.length - backspacesCounter)
+          0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }
@@ -200,7 +141,7 @@ class _LightPageState extends State<LightPage> {
     }
   }
 
-  //******************     send message    ******************
+//******************     send message    ******************
 //   Method to send message,
 // for turning the Bluetooth device on
 //   void _sendOnMessageToBluetooth() async {

@@ -4,13 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-class termoPage extends StatefulWidget {
+class LightPage extends StatefulWidget {
   final BluetoothDevice server;
 
-  const termoPage({required this.server});
+  const LightPage({required this.server});
 
   @override
-  State<termoPage> createState() => _termoPageState();
+  State<LightPage> createState() => _LightPageState();
 }
 
 class _Message {
@@ -20,7 +20,7 @@ class _Message {
   _Message(this.whom, this.text);
 }
 
-class _termoPageState extends State<termoPage> {
+class _LightPageState extends State<LightPage> {
   static const clientID = 0;
   BluetoothConnection? connection;
   late bool _isSelected = false;

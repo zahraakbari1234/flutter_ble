@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 // import 'ChatPage.dart';
 import 'connection.dart';
-import 'termo_page.dart';
+import 'light_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -62,7 +62,7 @@ class MyHomePage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return termoPage(server: device);
+                    return LightPage(server: device);
                   },
                 ),
               );
